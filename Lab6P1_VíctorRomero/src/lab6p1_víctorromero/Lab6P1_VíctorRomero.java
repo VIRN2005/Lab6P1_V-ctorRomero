@@ -71,9 +71,14 @@ public class Lab6P1_VíctorRomero {
                 break;
 
                 case 2: {
-                    System.out.print(">> Ingrese el primer numero: ");
+                    System.out.print(">> Ingrese el numero: ");
                     int numero = leer.nextInt();
 
+                    String Number = ""+numero;
+                    
+                    if ((Number.length()< 4 || Number.length()>4) || Number.charAt(0)== Number.charAt(1) && Number.charAt(1)== Number.charAt(2) && Number.charAt(2)== Number.charAt(3)){
+                        System.out.println(">> Numero ingresado NO valido... ");
+                    } else {
                     System.out.println("Arreglo: ");
                     imprimir(Arreglo1(numero));
                     System.out.println(" ");
@@ -83,6 +88,10 @@ public class Lab6P1_VíctorRomero {
                     System.out.println(">> El Arreglo Ordenando Descendente: ");
                     imprimir(Orden2(Orden(numero)));
                     System.out.println(" ");
+                    System.out.println(" ");
+                    System.out.println("Metodo Kaprekar");
+                    System.out.println(kaprekar(numero));
+                    }
                 }
             }
 
@@ -161,7 +170,6 @@ public class Lab6P1_VíctorRomero {
 
     public static int[] Orden2(int[] orden) {
 
-        System.out.println("hola");
         int[] temporal = new int[orden.length];
 
         int auxiliar = 0;
@@ -173,6 +181,8 @@ public class Lab6P1_VíctorRomero {
         solamente invertimos los valores con el orden de length restandole 1 y el
         valor cambiante de i... 
         Ahora el cambio solamente se invierte los valores ya ordenados
+        De este modo obtenemos ambos valores Ascendente y Descendente
+        Se toma el valor de temporal de V para determinar que sea menor que J
          */
         for (int i = 0; i < orden.length; i++) {
             temporal[i] = orden[orden.length - 1 - i];
@@ -180,16 +190,41 @@ public class Lab6P1_VíctorRomero {
         return temporal;
     }
 
-    public static int kaprekar(int[] orden) {
-        String arreglo1="";
+    public static int kaprekar(int numero){
+        int repeticiones=0;
+        int rest=0;
+        String arregloMin ="";
+        String arregloMay="";
         
-        for (int i = 0; i < orden.length; i++) {
-            arreglo1+=orden;
-        }
         
-        int numeros=0;
-        numeros=Integer.parseInt(arreglo1);
+        do{
+            int[]Mayor = Orden2(Orden(numero)); 
+            int[]Menor = Orden(numero); 
+            
+            for (int i = 0; i < Mayor.length; i++) {
+                arregloMin += Menor[i];
+                arregloMay += Mayor[i];
+            }
+            
+            int Min = Integer.parseInt(arregloMin);
+            int Max = Integer.parseInt(arregloMay);
+            
+            numero=Max-Min;
+            
+            System.out.println(Max+" - "+Min+" = "+numero);
+            
+            arregloMin ="";
+            arregloMay="";
+            String num=""+numero;
+            
+            if(numero<1000){
+                num+="0";
+                numero=Integer.parseInt(num);
+            }
+        } while(numero!= 6174);
+       
         
-    return numeros;
+        return numero;
     }
 }
+
